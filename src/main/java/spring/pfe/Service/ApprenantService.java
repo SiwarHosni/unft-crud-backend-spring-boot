@@ -9,6 +9,6 @@ public interface ApprenantService {
     void saveApprenant(Apprenant apprenant);
     Apprenant UpdateApprenant(Apprenant apprenant);
     List<Apprenant> listApprenants();
-    void removeApprenant(Long cin );
+    void removeApprenant(Long cin);
     public Optional<Apprenant> FindApprenant(Long cin);
 }

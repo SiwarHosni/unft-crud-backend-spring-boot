@@ -8,6 +8,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import spring.pfe.Service.ApprenantService;
 import spring.pfe.entity.Apprenant;
+import spring.pfe.entity.Club;
+import spring.pfe.repository.ApprenantRepo;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -21,20 +24,21 @@ public class ApprenantController {
 
     @Autowired
     private ApprenantService apprenantService;
+    @Autowired
+    private ApprenantRepo apprenantRepo;
 
     @PostMapping("/apprenants")
     public String createApprenant(@Validated @RequestBody Apprenant a) {
         apprenantService.saveApprenant(a);
-        return "Ajouté avec succès";
+        return "Ajouté avec succès.";
     }
 
     @PutMapping("/apprenants/{/id}")
-    public String updateApprenant(@PathVariable(value = "id") Long medid, @Validated @RequestBody Apprenant a) {
-        Apprenant app = apprenantService.UpdateApprenant(a);
-        if(app==null) {
-            return "Impossible de faire la mise à jour";
-        }
-        else {
+    public String updateApprenant(@PathVariable(value = "id") Long id, @Validated @RequestBody Apprenant a) {
+        Optional<Apprenant> apprinfo = apprenantRepo.findById(id);
+        if(apprinfo.isPresent()) {
+
+            Apprenant app = apprinfo.get();
             app.setNomappr(a.getNomappr());
             app.setPrenomappr(a.getPrenomappr());
             app.setDate_naissappr(a.getDate_naissappr());
@@ -43,9 +47,11 @@ public class ApprenantController {
 
 
             apprenantService.UpdateApprenant(a);
-            return "la mise à jour a été effectué avec succès";
+            return "la mise à jour a été effectué avec succès.";
         }
-
+        else {
+            return "Impossible de faire la mise à jour !";
+        }
 
     }
 
@@ -62,11 +68,11 @@ public class ApprenantController {
         return apprenantService.listApprenants();
     }
 
-    @DeleteMapping(value = "/deleteapprenant/{id}")
+    @DeleteMapping(value = "/apprenants/{id}")
     public String deleteapprenant(@PathVariable(value = "id")String id)
     {
         apprenantService.removeApprenant(Long.parseLong(id));
-        return "Apprenant supprimé avec succès";
+        return "Apprenant supprimé avec succès.";
     }
 
 

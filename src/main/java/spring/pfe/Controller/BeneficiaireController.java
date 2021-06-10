@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import spring.pfe.Service.BeneficiaireService;
+import spring.pfe.entity.Apprenant;
 import spring.pfe.entity.Beneficiaire;
+import spring.pfe.repository.BeneficiaireRepo;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,20 +17,21 @@ public class BeneficiaireController {
 
     @Autowired
     private BeneficiaireService beneficiaireService;
+    @Autowired
+    private BeneficiaireRepo beneficiaireRepo;
 
     @PostMapping("/beneficiaires")
     public String createBeneficiaire(@Validated @RequestBody Beneficiaire b) {
         beneficiaireService.saveBeneficiaire(b);
-        return "Ajouté avec succès";
+        return "Ajouté avec succès.";
     }
 
     @PutMapping("/beneficiaires/{id}")
-    public String updateBeneficiaire(@PathVariable(value = "id") Long medid, @Validated @RequestBody Beneficiaire b) {
-        Beneficiaire bene = beneficiaireService.UpdateBeneficiaire(b);
-        if(bene==null) {
-            return "Impossible de faire la mise à jour";
-        }
-        else {
+    public String updateBeneficiaire(@PathVariable(value = "id") Long id, @Validated @RequestBody Beneficiaire b) {
+        Optional<Beneficiaire> benefinfo = beneficiaireRepo.findById(id);
+        if(benefinfo.isPresent()) {
+
+            Beneficiaire bene = benefinfo.get();
             bene.setLieu_cin(b.getLieu_cin());
             bene.setDate_emission(b.getDate_emission());
             bene.setNomb(b.getNomb());
@@ -53,7 +56,11 @@ public class BeneficiaireController {
 
 
             beneficiaireService.UpdateBeneficiaire(b);
-            return "la mise à jour a été éffectué avec succès";
+            return "la mise à jour a été éffectué avec succès.";
+        }
+        {
+
+            return "Impossible de faire la mise à jour !";
         }
     }
 
@@ -73,7 +80,7 @@ public class BeneficiaireController {
     public String deletbeneficiaire(@PathVariable(value = "id")String id)
     {
         beneficiaireService.removeBeneficiaire(Long.parseLong(id));
-        return "Beneficiaire supprimé avec succes";
+        return "Beneficiaire supprimé avec succès.";
     }
 
 }

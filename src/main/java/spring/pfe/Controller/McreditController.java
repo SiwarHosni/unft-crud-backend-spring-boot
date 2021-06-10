@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.*;
 
 
 import spring.pfe.Service.McreditService;
+import spring.pfe.entity.Formation;
 import spring.pfe.entity.Mcredit;
+import spring.pfe.repository.McreditRepo;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -18,6 +20,8 @@ import spring.pfe.entity.Mcredit;
 public class McreditController {
     @Autowired
     private McreditService mcreditService;
+    @Autowired
+    private McreditRepo mcreditRepo;
 
     @PostMapping("/credits")
     public String createMcredit(@Validated @RequestBody Mcredit m) {
@@ -26,12 +30,11 @@ public class McreditController {
     }
 
     @PutMapping("/credits/{id}")
-    public String updateMcredit(@PathVariable(value = "id") Long medid, @Validated @RequestBody Mcredit m) {
-        Mcredit mc = mcreditService.UpdateMcredit(m);
-        if(mc==null) {
-            return "Impossible de faire la mise à jour";
-        }
-        else {
+    public String updateMcredit(@PathVariable(value = "id") Long id, @Validated @RequestBody Mcredit m) {
+        Optional<Mcredit> mcinfo = mcreditRepo.findById(id);
+        if(mcinfo.isPresent()) {
+
+            Mcredit mc = mcinfo.get();
             mc.setMontant_cr(m.getMontant_cr());
             mc.setDuree_cr(m.getDuree_cr());
             mc.setDuree_ech(m.getDuree_ech());
@@ -43,7 +46,10 @@ public class McreditController {
 
 
             mcreditService.UpdateMcredit(m);
-            return "la mise à jour a été éffectué avec succès";
+            return "la mise à jour a été éffectué avec succès.";
+        }
+        else {
+            return "Impossible de faire la mise à jour !";
         }
     }
 

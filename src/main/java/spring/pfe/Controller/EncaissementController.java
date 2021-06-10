@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.*;
 
 
 import spring.pfe.Service.EncaissementService;
+import spring.pfe.entity.Cformation;
 import spring.pfe.entity.Encaissement;
+import spring.pfe.repository.EncaissementRepo;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -21,6 +23,8 @@ public class EncaissementController {
 
     @Autowired
     private EncaissementService encaissementService;
+    @Autowired
+    private EncaissementRepo encaissementRepo;
 
     @PostMapping("/encaissements")
     public String createEncaissement(@Validated @RequestBody Encaissement e) {
@@ -29,12 +33,11 @@ public class EncaissementController {
     }
 
     @PutMapping("/encaissements/{id}")
-    public String updateEncaissement(@PathVariable(value = "id") Long medid, @Validated @RequestBody Encaissement e) {
-        Encaissement enc = encaissementService.UpdateEncaissement(e);
-        if(enc==null) {
-            return "Impossible de faire la mise à jour";
-        }
-        else {
+    public String updateEncaissement(@PathVariable(value = "id") Long id, @Validated @RequestBody Encaissement e) {
+        Optional<Encaissement> encinfo = encaissementRepo.findById(id);
+        if(encinfo.isPresent()) {
+
+            Encaissement enc = encinfo.get();
             enc.setNum_recu(e.getNum_recu());
             enc.setMontant_enc(e.getMontant_enc());
             enc.setDate_enc(e.getDate_enc());
@@ -45,6 +48,9 @@ public class EncaissementController {
 
             encaissementService.UpdateEncaissement(e);
             return "la mise à jour a été éffectué avec succès";
+        }
+        else {
+            return "Impossible de faire la mise à jour";
         }
     }
 

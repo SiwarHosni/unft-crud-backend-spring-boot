@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.*;
 
 
 import spring.pfe.Service.ProjetService;
+import spring.pfe.entity.Mcredit;
 import spring.pfe.entity.Projet;
+import spring.pfe.repository.ProjetRepo;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -18,6 +20,8 @@ public class ProjetController {
 
     @Autowired
     private ProjetService projetService;
+    @Autowired
+    private ProjetRepo projetRepo;
 
     @PostMapping("/projets")
     public String createProjet(@Validated @RequestBody Projet p) {
@@ -26,12 +30,11 @@ public class ProjetController {
     }
 
     @PutMapping("/projets/{id}")
-    public String updateProjet(@PathVariable(value = "id") Long medid, @Validated @RequestBody Projet p) {
-        Projet proj = projetService.UpdateProjet(p);
-        if(proj==null) {
-            return "Impossible de faire la mise à jour";
-        }
-        else {
+    public String updateProjet(@PathVariable(value = "id") Long id, @Validated @RequestBody Projet p) {
+        Optional<Projet> projetinfo = projetRepo.findById(id);
+        if(projetinfo.isPresent())
+        {
+            Projet proj = projetinfo.get();
             proj.setType_projet(p.getType_projet());
             proj.setSect_act(p.getSect_act());
             proj.setType_act(p.getType_act());
@@ -44,7 +47,10 @@ public class ProjetController {
 
 
             projetService.UpdateProjet(p);
-            return "la mise à jour a été éffectué avec succès";
+            return "la mise à jour a été éffectué avec succès.";
+        }
+        else{
+            return "Impossible de faire la mise à jour !";
         }
     }
 
