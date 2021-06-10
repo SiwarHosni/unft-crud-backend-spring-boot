@@ -49,7 +49,7 @@ public class Beneficiaire implements Serializable {
     private String src_rev_fam_b;
     private String mm_rev_fam_b;
     private String nom_banque;
-    private long rib;
+    private String rib;
 
     @OneToOne(cascade = CascadeType.ALL)
     private Projet Projet;
@@ -60,33 +60,6 @@ public class Beneficiaire implements Serializable {
     public Beneficiaire() {
         super();
         // TODO Auto-generated constructor stub
-    }
-
-    public Beneficiaire(long cin, String lieu_cin, Date date_emission, String nomb, String prenomb, Date date_naissance, String adresse, String gouv_b, String delegation, String sexe, String etat_civile, String tel, String niveau_ed, String profession, String duree_experience, String logement, String src_rev_b, String mm_rev_b, String src_rev_fam_b, String mm_rev_fam_b, String nom_banque, long rib, spring.pfe.entity.Projet projet, List<Mcredit> mcredits) {
-        this.cin = cin;
-        Lieu_cin = lieu_cin;
-        this.date_emission = date_emission;
-        this.nomb = nomb;
-        this.prenomb = prenomb;
-        this.date_naissance = date_naissance;
-        this.adresse = adresse;
-        Gouv_b = gouv_b;
-        this.delegation = delegation;
-        this.sexe = sexe;
-        this.etat_civile = etat_civile;
-        this.tel = tel;
-        this.niveau_ed = niveau_ed;
-        this.profession = profession;
-        this.duree_experience = duree_experience;
-        this.logement = logement;
-        this.src_rev_b = src_rev_b;
-        this.mm_rev_b = mm_rev_b;
-        this.src_rev_fam_b = src_rev_fam_b;
-        this.mm_rev_fam_b = mm_rev_fam_b;
-        this.nom_banque = nom_banque;
-        this.rib = rib;
-        Projet = projet;
-        this.mcredits = mcredits;
     }
 
     public static long getSerialVersionUID() {
@@ -261,11 +234,11 @@ public class Beneficiaire implements Serializable {
         this.nom_banque = nom_banque;
     }
 
-    public long getRib() {
+    public String getRib() {
         return rib;
     }
 
-    public void setRib(long rib) {
+    public void setRib(String rib) {
         this.rib = rib;
     }
 
@@ -284,5 +257,31 @@ public class Beneficiaire implements Serializable {
     public void setMcredits(List<Mcredit> mcredits) {
         this.mcredits = mcredits;
     }
-}
 
+    public Beneficiaire(long cin, String lieu_cin, Date date_emission, String nomb, String prenomb, Date date_naissance, String adresse, String gouv_b, String delegation, String sexe, String etat_civile, String tel, String niveau_ed, String profession, String duree_experience, String logement, String src_rev_b, String mm_rev_b, String src_rev_fam_b, String mm_rev_fam_b, String nom_banque, String rib, spring.pfe.entity.Projet projet, List<Mcredit> mcredits) {
+        this.cin = cin;
+        Lieu_cin = lieu_cin;
+        this.date_emission = date_emission;
+        this.nomb = nomb;
+        this.prenomb = prenomb;
+        this.date_naissance = date_naissance;
+        this.adresse = adresse;
+        Gouv_b = gouv_b;
+        this.delegation = delegation;
+        this.sexe = sexe;
+        this.etat_civile = etat_civile;
+        this.tel = tel;
+        this.niveau_ed = niveau_ed;
+        this.profession = profession;
+        this.duree_experience = duree_experience;
+        this.logement = logement;
+        this.src_rev_b = src_rev_b;
+        this.mm_rev_b = mm_rev_b;
+        this.src_rev_fam_b = src_rev_fam_b;
+        this.mm_rev_fam_b = mm_rev_fam_b;
+        this.nom_banque = nom_banque;
+        this.rib = rib;
+        Projet = projet;
+        this.mcredits = mcredits;
+    }
+}
